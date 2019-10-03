@@ -1,9 +1,14 @@
 import pandas as pd
 import numpy as np
 
-funding = pd.read_csv("startup_funding.csv")
+missingValues = ['Undisclosed','N/A','undisclosed']
+funding = pd.read_csv("startup_funding.csv",na_values=missingValues)
 print(funding.shape)
 
-funding.Amount = funding.Amount.astype(int)
 
-print(funding.dtypes)
+for i in range(3009):
+    amount = str(funding.Amount[i]).replace(",","")
+    funding.Amount[i] = amount
+# print(funding.Amount)
+funding['Amount'] = pd.to_numeric(funding['Amount'],errors='coerce')
+print(funding['Amount'].min())
